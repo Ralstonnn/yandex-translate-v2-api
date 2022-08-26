@@ -3,8 +3,10 @@
   "version": "1.0.0",
   "description": "Node package to make work with yandex API easier",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc -p ./tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -17,7 +19,7 @@
     "api"
   ],
   "author": "Ralstonnn",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Ralstonnn/yandex-translate-v2-api/issues"
   },
@@ -25,5 +27,8 @@
   "dependencies": {
     "node-fetch": "^3.2.10"
   },
-  "type":"module"
+  "devDependencies": {
+    "@types/node": "^18.7.13",
+    "typescript": "^4.8.2"
+  }
 }
