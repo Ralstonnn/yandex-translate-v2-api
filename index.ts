@@ -1,5 +1,6 @@
 import fetch from "node-fetch";
 import * as fs from "fs";
+import path from "path";
 
 export class Translator {
   targetLanguage = "";
@@ -58,7 +59,7 @@ export class Translator {
     response = await response.text();
     response = (JSON.parse(response) as ResultType).translations;
 
-    return (response as TranslationsType[]).map((item) => item.text);;
+    return (response as TranslationsType[]).map((item) => item.text);
   }
 
   async detect(text: string): Promise<string> {
@@ -88,7 +89,7 @@ export class Translator {
   }
 
   getStringArrayFromObject(obj: object): string[] {
-    let result: string[] = [];
+    const result: string[] = [];
 
     Object.values(obj).forEach((value) => {
       if (typeof value === "string") {
@@ -105,7 +106,7 @@ export class Translator {
   async translateStabilized(texts: string[] | string): Promise<string[]> {
     if (typeof texts === "string") texts = [texts];
 
-    let result = [];
+    const result = [];
     if (texts.join("").length > 10000) {
       let silcedArray: string[] = await this.translateStabilized(
         texts.slice(0, texts.length - 5)
@@ -116,7 +117,7 @@ export class Translator {
       );
       result.push(...silcedArray);
     } else {
-      let tempRes = await this.translate(texts);
+      const tempRes = await this.translate(texts);
       result.push(...tempRes);
     }
 
@@ -128,11 +129,11 @@ export class Translator {
     obj: object
   ): Promise<{ [key: string]: string | object }> {
     if (this.#translatedArray.length === 0) {
-      let tmp = this.getStringArrayFromObject(obj);
+      const tmp = this.getStringArrayFromObject(obj);
       await this.translateStabilized(tmp);
     }
 
-    let result: { [key: string]: string | object } = {};
+    const result: { [key: string]: string | object } = {};
 
     for (const [key, value] of Object.entries(obj)) {
       if (typeof value === "string") {
@@ -151,7 +152,13 @@ export class Translator {
     filePath: string,
     type: "js" | "json" = "js"
   ): Promise<void> {
-    let translatedObj = await this.getTranslatedObject(obj);
+    const translatedObj = await this.getTranslatedObject(obj);
+
+    if (!fs.existsSync(path.dirname(filePath))) {
+      fs.mkdirSync(path.join(process.cwd(), path.dirname(filePath)), {
+        recursive: true,
+      });
+    }
 
     if (type.toLowerCase() === "json") {
       fs.writeFile(filePath, JSON.stringify(translatedObj), (err) => {

@@ -1,7 +1,7 @@
 # yandex-translate-v2-api
 You have to ways to use this module
 * With IAM_TOKEN buy running ```const t = Translator.Imt(<IAM_TOKEN>, <FOLDER_ID>, <targetLanguage>)```
-* With API_KEY ```const t = Translator.Imt(<API_KEY>, <FOLDER_ID>, <targetLanguage>)```
+* With API_KEY ```const t = Translator.Api(<API_KEY>, <FOLDER_ID>, <targetLanguage>)```
 
 ```targetLanguage``` is English by default. You can find the list of available languages and their codes here https://cloud.yandex.com/en-ru/docs/translate/concepts/supported-languages
 
